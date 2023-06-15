@@ -1,9 +1,6 @@
 package hiber.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * \* Create by Prekrasnov Sergei
@@ -14,14 +11,12 @@ import javax.persistence.Table;
 @Table(name = "cars")
 public class Car {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String model;
     private int series;
-    @OneToOne(mappedBy = "car")
-    private User user;
 
     public Car() {
-
     }
 
     public Car(String model, int series) {
@@ -51,13 +46,5 @@ public class Car {
 
     public void setSeries(int series) {
         this.series = series;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

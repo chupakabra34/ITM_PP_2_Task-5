@@ -10,38 +10,32 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MainApp {
-   public static void main(String[] args) throws SQLException {
-      AnnotationConfigApplicationContext context = 
-            new AnnotationConfigApplicationContext(AppConfig.class);
+    public static void main(String[] args) throws SQLException {
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(AppConfig.class);
 
-      UserService userService = context.getBean(UserService.class);
+        UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
-
-       Car car1 = new Car("Lada-01",2);
-       Car car2 = new Car("Lada-02",3);
-       Car car3 = new Car("Lada-03",4);
-       Car car4 = new Car("Lada-04",7);
-       Car car5 = new Car("Lada-05",3);
-       Car car6 = new Car("Lada-06",2);
-       Car car7 = new Car("Lada-07",3);
-       Car car8 = new Car("Lada-08",9);
-       Car car9 = new Car("Lada-09",12);
+        userService.add(new User("User1", "Lastname1", "user1@mail.ru", new Car("car1", 1)));
+        userService.add(new User("User2", "Lastname2", "user2@mail.ru", new Car("car2", 2)));
+        userService.add(new User("User3", "Lastname3", "user3@mail.ru", new Car("car3", 3)));
+        userService.add(new User("User4", "Lastname4", "user4@mail.ru", new Car("car4", 4)));
 
 
+        List<User> users = userService.listUsers();
+        for (User user : users) {
+            System.out.println("Id = " + user.getId());
+            System.out.println("First Name = " + user.getFirstName());
+            System.out.println("Last Name = " + user.getLastName());
+            System.out.println("Email = " + user.getEmail());
+            System.out.println("Car = model: " + user.getCar().getModel() + " series: " + user.getCar().getSeries());
+            System.out.println();
+        }
 
-      List<User> users = userService.listUsers();
-      for (User user : users) {
-         System.out.println("Id = "+user.getId());
-         System.out.println("First Name = "+user.getFirstName());
-         System.out.println("Last Name = "+user.getLastName());
-         System.out.println("Email = "+user.getEmail());
-         System.out.println();
-      }
-
-      context.close();
-   }
+        String model = "car2";
+        int series = 2;
+        User user = userService.getUserByCarModelAndSeries(model, series);
+        System.out.printf(String.format("Владеет авто модель: %s серия: %d юзер %s с id %d \n", model, series, user.getFirstName(), user.getId()));
+        context.close();
+    }
 }
